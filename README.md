@@ -8,25 +8,25 @@ This is the API documentation for the Product Price Monitor project. The API is 
 
 #### Get all products
 
-- **Endpoint:** `/products/`
+- **Endpoint:** `/api/products/`
 - **Method:** `GET`
 - **Description:** Get a list of all products.
 
 #### Create a new product
 
-- **Endpoint:** `/products/`
+- **Endpoint:** `/api/products/`
 - **Method:** `POST`
 - **Description:** Create a new product.
 
 #### Update a product
 
-- **Endpoint:** `/products/{product_id}/`
+- **Endpoint:** `/api/products/{product_id}/`
 - **Method:** `PUT`
 - **Description:** Update details of a specific product. If your start_date & end_date will match any existing product's price date range, it will change it's price value. In case if any of start_date or end_date overlaps with any product's existing price date range, it will raise an error, if no will create a new price range
 
 #### Partially update a product
 
-- **Endpoint:** `/products/{product_id}/`
+- **Endpoint:** `/api/products/{product_id}/`
 - **Method:** `PATCH`
 - **Description:** Partially update details of a specific product.
 
@@ -34,7 +34,7 @@ This is the API documentation for the Product Price Monitor project. The API is 
 
 #### Get average price for a product in a date range
 
-- **Endpoint:** `/products/{product_id}/calculate_average/`
+- **Endpoint:** `/api/products/{product_id}/calculate_average/`
 - **Method:** `GET`
 - **Description:** Calculate the average price for a product within a specified date range.
 
