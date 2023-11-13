@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  ppm-db:
+    container_name: ppm-db
+    image: postgres:12.7
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: product_price_monitor_db
+      POSTGRES_USER: mario
+      POSTGRES_PASSWORD: mydbpassword
+
+  ppm-api:
+    container_name: ppm-api
+    build: .
+    command: python manage.py runserver 0.0.0.0:8003
+    volumes:
+      - .:/product_price_manager
+    ports:
+      - "8003:8003"
+    depends_on:
+      - ppm-db
+    environment:
+      DJANGO_DB_HOST: ppm-db
+      DJANGO_DB_PORT: 5432
+      DJANGO_DB_NAME: product_price_monitor_db
+      DJANGO_DB_USER: mario
+      DJANGO_DB_PASSWORD: mydbpassword
