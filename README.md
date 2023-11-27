@@ -41,8 +41,8 @@ This is the API documentation for the Product Price Monitor project. The API is 
 ## Docker Setup
 
 1. Clone the repository.
-2. Build and Run: `docker compose up -d`
-3. Run migrations: `docker exec -it ppm-api python manage.py migrate`
+2. Create `.env` file and fill the variables with the necessary information
+3. Build and Run: `docker compose up -d`
 4. Create your superuser: `docker exec -it ppm-api python manage.py createsuperuser`
 5. You're good to go
 

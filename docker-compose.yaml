@@ -7,9 +7,11 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: product_price_monitor_db
-      POSTGRES_USER: mario
-      POSTGRES_PASSWORD: mydbpassword
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ppm-db-data:/var/lib/postgresql/data
 
   ppm-api:
     container_name: ppm-api
@@ -22,8 +24,14 @@ services:
     depends_on:
       - ppm-db
     environment:
-      DJANGO_DB_HOST: ppm-db
-      DJANGO_DB_PORT: 5432
-      DJANGO_DB_NAME: product_price_monitor_db
-      DJANGO_DB_USER: mario
-      DJANGO_DB_PASSWORD: mydbpassword
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+    entrypoint: /entrypoint.sh
+    env_file:
+      - .env
+
+volumes:
+  ppm-db-data:

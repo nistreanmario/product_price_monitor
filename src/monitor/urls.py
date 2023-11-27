@@ -19,7 +19,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('products/<int:product_id>/average_price', CalculateAveragePriceView.as_view(), name='calculate-average-price'),
+    path('products/<int:product_id>/average_price/', CalculateAveragePriceView.as_view(), name='calculate-average-price'),
     path('products/', ProductsCreateView.as_view(), name='products-create'),
     path('products/<int:pk>/', ProductEditView.as_view(), name='product-edit'),
 

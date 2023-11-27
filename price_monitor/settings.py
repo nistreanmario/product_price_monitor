@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -78,11 +78,11 @@ WSGI_APPLICATION = 'price_monitor.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'product_price_monitor_db',
-        'USER': 'mario',
-        'PASSWORD': 'mydbpassword',
-        'HOST': 'ppm-db',
-        'PORT': '5432',
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
+        'NAME': os.environ.get('DB_NAME', 'default_db_name'),
+        'USER': os.environ.get('DB_USER', 'default_db_user'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'default_db_password'),
     }
 }
 
