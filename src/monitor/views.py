@@ -11,7 +11,7 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
 from .models import Product, ProductsPrices
-from .serializers import ProductSerializer
+from .serializers import ProductSerializer, ProductResponseSerializer
 from .services import CalculateAveragePriceService, ProductService
 
 
@@ -53,13 +53,14 @@ class ProductsCreateView(generics.ListCreateAPIView):
             serializer = ProductSerializer(data=request.data, context={'request': request})
             serializer.is_valid(raise_exception=True)
 
-            ProductService.create_product_with_price(
+            product = ProductService.create_product_with_price(
                 name=serializer.validated_data['name'],
                 price=serializer.validated_data.get('price'),
                 start_date=serializer.validated_data.get('start_date'),
                 end_date=serializer.validated_data.get('end_date'),
             )
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            response_serializer = ProductResponseSerializer(product)
+            return Response(response_serializer.data, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -83,7 +84,6 @@ class ProductEditView(generics.UpdateAPIView):
     def update(self, request, *args, **kwargs):
         try:
             instance = self.get_object()
-            print(instance)
             serializer = ProductSerializer(instance, data=request.data)
             serializer.is_valid(raise_exception=True)
 

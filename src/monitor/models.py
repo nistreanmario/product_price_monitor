@@ -10,7 +10,7 @@ class Product(models.Model):
 
 
 class ProductsPrices(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='prices')
     start_date = models.DateField()
     end_date = models.DateField(null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)

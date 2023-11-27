@@ -11,20 +11,18 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = ['name', 'price', 'start_date', 'end_date']
 
 
-class ProductResponseSerializer(serializers.ModelSerializer):
-    price = serializers.DecimalField(max_digits=10, decimal_places=2, required=False)
-    start_date = serializers.DateField(required=False)
-    end_date = serializers.DateField(required=False)
-
-    class Meta:
-        model = Product
-        fields = ['name', 'price', 'start_date', 'end_date']
-
-
 class ProductsPricesSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductsPrices
-        fields = ('price', 'start_date', 'end_date')
+        fields = ['id', 'price', 'start_date', 'end_date']
+
+
+class ProductResponseSerializer(serializers.ModelSerializer):
+    prices = ProductsPricesSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Product
+        fields = ['id', 'name', 'prices']
 
 
 class CalculateAveragePriceSerializer(serializers.Serializer):
