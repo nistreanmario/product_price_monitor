@@ -4,9 +4,9 @@ from django.utils import timezone
 from django.views.generic import RedirectView
 from rest_framework.exceptions import NotFound
 from rest_framework.views import APIView
-from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework import viewsets
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
@@ -21,7 +21,8 @@ class RootRedirectView(RedirectView):
     permanent = False
 
 
-class ProductsCreateView(generics.ListCreateAPIView):
+
+class ProductsViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
@@ -47,6 +48,11 @@ class ProductsCreateView(generics.ListCreateAPIView):
 
         return Response(serialized_data)
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = ProductResponseSerializer(instance)
+        return Response(serializer.data)
+
     @swagger_auto_schema(request_body=ProductSerializer)
     def create(self, request, *args, **kwargs):
         try:
@@ -64,23 +70,12 @@ class ProductsCreateView(generics.ListCreateAPIView):
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-
-class ProductEditView(generics.UpdateAPIView):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-
     @swagger_auto_schema(
         request_body=ProductSerializer,
         operation_description="If your start_date & end_date will match any existing product's price date range, "
-                              "it will change it's price value. In case if any of start_date or end_date overlaps with "
+                              "it will change its price value. In case if any of start_date or end_date overlaps with "
                               "any product's existing price date range, it will raise an error, if no will create a new price range "
     )
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
-
-    def patch(self, request, *args, **kwargs):
-        return self.partial_update(request, *args, **kwargs)
-
     def update(self, request, *args, **kwargs):
         try:
             instance = self.get_object()
@@ -102,6 +97,9 @@ class ProductEditView(generics.UpdateAPIView):
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    def partial_update(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
 
 
 
